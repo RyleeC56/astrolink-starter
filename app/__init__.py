@@ -37,6 +37,8 @@ def create_app():
     # Example:
     #   from app.your_feature import your_bp
     #   app.register_blueprint(your_bp)
+    from app.stations import stations_bp
+    app.register_blueprint(stations_bp)
 
     with app.app_context():
         db.create_all()
