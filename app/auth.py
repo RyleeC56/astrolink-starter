@@ -42,6 +42,10 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user and user.check_password(password):
+            ## Block users who no longer work at astro link
+            if user.employment_status == "left":
+                flash("This account has been deactivated.", "danger")
+                return render_template("login.html")
             login_user(user)
             flash(f"Logged in as {user.display_name or user.username}.", "success")
             return redirect(url_for("auth.home"))
