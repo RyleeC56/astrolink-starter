@@ -40,6 +40,9 @@ def create_app():
     from app.stations import stations_bp
     app.register_blueprint(stations_bp)
 
+    from app.subscribers import subscribers_bp
+    app.register_blueprint(subscribers_bp)
+
     with app.app_context():
         db.create_all()
 

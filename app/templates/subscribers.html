@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>Subscribers</h1></div>
+<section class="panel">
+  <table>
+    <tr><th>Name</th><th>Email</th><th>Plan</th><th>Satellite</th></tr>
+    {% for s in subscribers %}
+    <tr>
+      <td>{{ s.full_name }}</td>
+      <td>{{ s.email }}</td>
+      <td>{{ s.plan }}</td>
+      <td>{{ s.satellite.name if s.satellite else "" }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}
+
