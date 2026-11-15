@@ -38,6 +38,9 @@ class User(UserMixin, db.Model):
     display_name = db.Column(db.String(120))
     job_title = db.Column(db.String(50))  # display label only, NOT a permission
     employment_status = db.Column(db.String(20), default="employed")  # "employed" or "left"
+    ## Role decides what this user is ALLOWED to do (unlike job_title, which is just a label).
+    ## New accounts get the lowest role by default, so nobody gets power by accident.
+    role = db.Column(db.String(20), default="viewer")  # viewer, intern, operator, senior, admin <- to be decideds
     created_at = db.Column(db.DateTime, default=utcnow)
 
     def set_password(self, password):

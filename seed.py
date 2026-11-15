@@ -31,16 +31,16 @@ def seed():
 
         # ---------------- USERS ----------------
         accounts = [
-            # username, password, name, job title, employment status
-            ("admin", "spaceadmin123", "Alex Rivera", "Head of Operations", "employed"),
-            ("jchen", "operator123", "Jordan Chen", "Senior Operator", "employed"),
-            ("mkowalski", "operator123", "Morgan Kowalski", "Operator", "employed"),
-            ("intern22", "intern12345", "Casey Park", "Intern", "employed"),
-            ("tgarcia", "operator123", "Taylor Garcia", "Operator", "left"),  # left 3 weeks ago
+            # username, password, name, job title, employment status, role
+            ("admin", "spaceadmin123", "Alex Rivera", "Head of Operations", "employed", "admin"),
+            ("jchen", "operator123", "Jordan Chen", "Senior Operator", "employed", "senior"),
+            ("mkowalski", "operator123", "Morgan Kowalski", "Operator", "employed", "operator"),
+            ("intern22", "intern12345", "Casey Park", "Intern", "employed", "intern"),
+            ("tgarcia", "operator123", "Taylor Garcia", "Operator", "left", "operator"),  # left 3 weeks ago
         ]
         users = {}
-        for username, pw, name, title, status in accounts:
-            u = User(username=username, display_name=name, job_title=title, employment_status=status)
+        for username, pw, name, title, status, role in accounts:
+            u = User(username=username, display_name=name, job_title=title, employment_status=status, role=role)
             u.set_password(pw)
             db.session.add(u)
             users[username] = u
