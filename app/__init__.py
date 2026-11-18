@@ -7,6 +7,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from app.models import db, bcrypt, User
+from app.permissions import has_permission
 
 
 def create_app():
@@ -24,6 +25,10 @@ def create_app():
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
+
+    @app.context_processor
+    def inject_permission_helpers():
+        return {"has_permission": has_permission}
 
     @login_manager.user_loader
     def load_user(user_id):

@@ -2,14 +2,70 @@
 {% block title_extra %} — Home{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>Logged in as {{ current_user.display_name or current_user.username }}</h1>
-    <p>This is a placeholder. Replace it with your team's tool.</p>
-</div>
+<section class="welcome-panel">
+    <div>
+        <p class="eyebrow">AstroLink mission control</p>
+        <h1>Welcome back, {{ current_user.display_name or current_user.username }}</h1>
+        <p>Your operations overview is ready. Choose a section to get started.</p>
+    </div>
+    <span class="welcome-orbit" aria-hidden="true"></span>
+</section>
 
-<section class="panel">
-    <h2>Start here</h2>
-    <p>Read <code>docs/CHALLENGE.md</code> for the brief, and <code>docs/GETTING_STARTED.md</code> for how to add pages.</p>
-    <p style="margin-top: 12px;">To look at the data, run: <code>docker compose exec web python show_data.py</code></p>
+<section class="dashboard-section" aria-labelledby="fleet-heading">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">At a glance</p>
+            <h2 id="fleet-heading">Fleet overview</h2>
+        </div>
+        <span class="live-indicator"><span></span> Live inventory</span>
+    </div>
+    <div class="stat-grid">
+        <article class="stat-card">
+            <span class="stat-label">Satellites</span>
+            <strong>{{ stats.satellites }}</strong>
+            <span class="stat-detail">{{ stats.active_satellites }} active</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-label">Ground stations</span>
+            <strong>{{ stats.stations }}</strong>
+            <span class="stat-detail">{{ stats.online_stations }} online</span>
+        </article>
+        {% if has_permission(current_user, 'view_subscribers') %}
+            <article class="stat-card">
+                <span class="stat-label">Subscribers</span>
+                <strong>{{ stats.subscribers }}</strong>
+                <span class="stat-detail">Across the network</span>
+            </article>
+        {% endif %}
+    </div>
+</section>
+
+<section class="dashboard-section" aria-labelledby="workspace-heading">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Your workspace</p>
+            <h2 id="workspace-heading">Explore AstroLink</h2>
+        </div>
+    </div>
+    <div class="workspace-grid">
+        <a class="workspace-card" href="{{ url_for('stations.list_stations') }}">
+            <span class="workspace-icon" aria-hidden="true">01</span>
+            <span class="workspace-copy">
+                <strong>Ground stations</strong>
+                <span>Review station status, locations, and incoming telemetry.</span>
+            </span>
+            <span class="workspace-arrow" aria-hidden="true">→</span>
+        </a>
+        {% if has_permission(current_user, 'view_subscribers') %}
+            <a class="workspace-card" href="{{ url_for('subscribers.list_subscribers') }}">
+                <span class="workspace-icon" aria-hidden="true">02</span>
+                <span class="workspace-copy">
+                    <strong>Subscribers</strong>
+                    <span>Browse subscriber plans and their assigned satellites.</span>
+                </span>
+                <span class="workspace-arrow" aria-hidden="true">→</span>
+            </a>
+        {% endif %}
+    </div>
 </section>
 {% endblock %}

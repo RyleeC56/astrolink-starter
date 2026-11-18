@@ -11,7 +11,7 @@ Notice what this does NOT do (these are things teams build):
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
-from app.models import db, User
+from app.models import db, User, Satellite, GroundStation, Subscriber
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -26,8 +26,14 @@ def index():
 @auth_bp.route("/home")
 @login_required
 def home():
-    """Placeholder page after login. Point this at your own tool's main page."""
-    return render_template("home.html")
+    stats = {
+        "satellites": Satellite.query.count(),
+        "active_satellites": Satellite.query.filter_by(status="active").count(),
+        "stations": GroundStation.query.count(),
+        "online_stations": GroundStation.query.filter_by(status="online").count(),
+        "subscribers": Subscriber.query.count(),
+    }
+    return render_template("home.html", stats=stats)
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])

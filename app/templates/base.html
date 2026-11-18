@@ -10,11 +10,21 @@
 </head>
 <body>
     {% if current_user.is_authenticated %}
-    <nav>
+    <nav aria-label="Main navigation">
         <div class="nav-left">
-            <a href="/" class="logo">AstroLink</a>
+            <a href="{{ url_for('auth.home') }}" class="logo">AstroLink</a>
             <div class="nav-links">
-                {# Add links to your own pages here #}
+                <a href="{{ url_for('auth.home') }}"
+                   class="{{ 'active' if request.endpoint == 'auth.home' else '' }}"
+                   {% if request.endpoint == 'auth.home' %}aria-current="page"{% endif %}>Overview</a>
+                <a href="{{ url_for('stations.list_stations') }}"
+                   class="{{ 'active' if request.endpoint == 'stations.list_stations' else '' }}"
+                   {% if request.endpoint == 'stations.list_stations' %}aria-current="page"{% endif %}>Ground stations</a>
+                {% if has_permission(current_user, 'view_subscribers') %}
+                <a href="{{ url_for('subscribers.list_subscribers') }}"
+                   class="{{ 'active' if request.endpoint == 'subscribers.list_subscribers' else '' }}"
+                   {% if request.endpoint == 'subscribers.list_subscribers' %}aria-current="page"{% endif %}>Subscribers</a>
+                {% endif %}
             </div>
         </div>
         <div class="nav-right">
