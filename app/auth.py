@@ -16,6 +16,21 @@ from app.models import db, User, Satellite, GroundStation, Subscriber
 auth_bp = Blueprint("auth", __name__)
 
 
+def password_requirements_not_met(password):
+    """Return the password requirements that are not satisfied."""
+    requirements = [
+        (len(password) >= 8, "At least 8 characters"),
+        (any(char.isupper() for char in password), "At least one uppercase letter"),
+        (any(char.islower() for char in password), "At least one lowercase letter"),
+        (any(char.isdigit() for char in password), "At least one number"),
+        (
+            any(not char.isalnum() and not char.isspace() for char in password),
+            "At least one special character (not a space)",
+        ),
+    ]
+    return [message for met, message in requirements if not met]
+
+
 @auth_bp.route("/")
 def index():
     if current_user.is_authenticated:
@@ -71,6 +86,16 @@ def register():
         if not username or not password:
             flash("Username and password are required.", "danger")
             return redirect(url_for("auth.register"))
+
+        unmet_requirements = password_requirements_not_met(password)
+        if unmet_requirements:
+            flash(
+                "Password does not meet these requirements: "
+                + "; ".join(unmet_requirements)
+                + ".",
+                "danger",
+            )
+            return render_template("register.html")
 
         if User.query.filter_by(username=username).first():
             flash("Username already taken.", "danger")

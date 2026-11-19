@@ -488,6 +488,23 @@ tr:last-child td { border-bottom: none; }
 
 .auth-box .btn { margin-top: 8px; }
 
+.password-requirements {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-panel);
+    color: var(--fg-muted);
+    font-size: 12px;
+}
+
+.password-requirements ul {
+    margin: 6px 0 0 18px;
+}
+
+.password-requirements li { margin: 3px 0; }
+.password-example { margin-top: 8px; }
+.password-requirements code { color: var(--accent); }
+
 .auth-link {
     text-align: center;
     margin-top: 20px;
